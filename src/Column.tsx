@@ -6,6 +6,7 @@ import { AddNewItem } from './AddNewItem'
 import { useAppState } from "./AppStateContext"
 import { useItemDrag } from './useItemDrag'
 import { DragItem } from "./DragItem"
+import { isHidden } from "./utils/isHidden"
 
 interface ColumnProps {
     text: string
@@ -16,6 +17,7 @@ interface ColumnProps {
 export const Column = ({ text, index, id }: ColumnProps) => {
   const { state, dispatch } = useAppState()
   const ref = useRef<HTMLDivElement>(null)
+
   const [, drop] = useDrop({
     accept: "COLUMN",
     hover(item: DragItem) {
@@ -39,7 +41,7 @@ export const Column = ({ text, index, id }: ColumnProps) => {
 
 
   return (
-    <ColumnContainer ref={ref}> 
+    <ColumnContainer ref={ref} isHidden={isHidden(state.draggedItem, "COLUMN", id)}> 
       <ColumnTitle>{text}</ColumnTitle> 
       {state.lists[index].tasks.map((task, i) => (
         <Card text={task.text} key={task.id} index={i}/> 

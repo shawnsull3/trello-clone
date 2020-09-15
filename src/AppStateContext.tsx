@@ -1,4 +1,5 @@
 import React, { createContext, useReducer, useContext } from "react"
+import { nanoid } from "nanoid"
 
 interface Task { 
     id: string 
@@ -32,9 +33,12 @@ type Action =
 const appStateReducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
     case "ADD_LIST": {
-        // Reducer logic here...
         return {
-            ...state 
+            ...state,
+            lists: [
+                ...state.lists,
+                { id: nanoid(), text: action.payload, tasks: [] }
+            ] 
         }
     }
     case "ADD_TASK": {
